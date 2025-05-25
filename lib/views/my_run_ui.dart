@@ -98,8 +98,13 @@ class _MyRunUIState extends State<MyRunUI> {
                                 runDistance: run.runDistance,
                                 runTime: run.runTime,
                               ),
-                            )
-                          );
+                            ),
+                          ).then((Value) {
+                            setState(() {
+                              // เมื่อกลับมาจาก UpDelRunUI ให้รีเฟรชข้อมูลใหม่
+                              myRuns = fetchMyRuns();
+                            });
+                          });
                           },
                           leading: CircleAvatar(
                             backgroundColor: Colors.purple,

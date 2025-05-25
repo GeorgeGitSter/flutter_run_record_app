@@ -22,7 +22,7 @@ class _FlutterRunRecordAppState extends State<FlutterRunRecordApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyRunUI(),
+      home: SplashScreenUI(),
       theme: ThemeData(
         textTheme: GoogleFonts.kanitTextTheme(
           Theme.of(context).textTheme,

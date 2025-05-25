@@ -97,127 +97,135 @@ class _InsertRunUIState extends State<InsertRunUI> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40.0),
-        child: Center(
-          child: Column(
-            children: [
-              const SizedBox(height: 60.0),
-              Image.asset(
-                'assets/images/runner.png',
-                width: 200.0,
-              ),
-              const SizedBox(height: 60.0),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'สถานที่วิ่ง',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
+      body: GestureDetector(
+        onTap: () {
+          // ปิดแป้นพิมพ์เมื่อแตะที่พื้นที่ว่าง
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: Center(
+              child: Column(
+                children: [
+                  const SizedBox(height: 60.0),
+                  Image.asset(
+                    'assets/images/runner.png',
+                    width: 200.0,
                   ),
-                ),
-              ),
-              const SizedBox(height: 10.0),
-              TextField(
-                controller: runLocationCtrl,
-                decoration: const InputDecoration(
-                  hintText: 'กรุณากรอกสถานที่วิ่ง',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'ระยะทางที่วิ่ง (กิโลเมตร)',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(height: 60.0),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'สถานที่วิ่ง',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 10.0),
-              TextField(
-                controller: runDistanceCtrl,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  hintText: 'กรุณากรอกระยะทางที่วิ่ง',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'เวลาที่ใช้ในการวิ่ง (นาที)',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(height: 10.0),
+                  TextField(
+                    controller: runLocationCtrl,
+                    decoration: const InputDecoration(
+                      hintText: 'กรุณากรอกสถานที่วิ่ง',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 10.0),
-              TextField(
-                controller: runTimeCtrl,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  hintText: 'กรุณากรอกเวลาที่ใช้ในการวิ่ง',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 40.0),
-              ElevatedButton(
-                onPressed: () async {
-                  // ตรวจสอบว่ากรอกข้อมูลครบถ้วนหรือไม่
-                  if (runLocationCtrl.text.isEmpty) {
-                    await _showWarningDialog('กรุณากรอกข้อมูลสถานที่วิ่ง');
-                  } else if (runDistanceCtrl.text.isEmpty) {
-                    await _showWarningDialog('กรุณากรอกระยะทางที่วิ่ง');
-                  } else if (runTimeCtrl.text.isEmpty) {
-                    await _showWarningDialog('กรุณากรอกเวลาในการวิ่ง');
-                  } else {
-                    // ถ้ากรอกข้อมูลครบถ้วนแล้ว ทำการบันทึกข้อมูล
-                    // แพ็กข้อมูล
-                    Run run = Run(
-                      runLocation: runLocationCtrl.text,
-                      runDistance: double.parse(runDistanceCtrl.text),
-                      runTime: int.parse(runTimeCtrl.text),
-                    );
-
-                    // ส่งเป็น JSON
-                    final result = await Dio().post(
-                      'http://172.17.36.43:5090/api/run',
-                      data: run.toJson(),
-                    );
-
-                    // ตรวจสอบผลลัพธ์
-                    if(result.statusCode == 201) {
-                      await _showResultDialog('บันทึกการวิ่งแล้ว').then((value){
-                        Navigator.pop(context); // กลับไปหน้าจอวิ่ง
-                      });
-                    } else {
-                      await _showWarningDialog('บันทึกการวิ่งไม่สําเร็จ');
-                    }
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                  fixedSize: Size(MediaQuery.of(context).size.width, 60.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                  const SizedBox(height: 20.0),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'ระยะทางที่วิ่ง (กิโลเมตร)',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  'บันทึกการวิ่ง',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                  const SizedBox(height: 10.0),
+                  TextField(
+                    controller: runDistanceCtrl,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      hintText: 'กรุณากรอกระยะทางที่วิ่ง',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 20.0),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'เวลาที่ใช้ในการวิ่ง (นาที)',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  TextField(
+                    controller: runTimeCtrl,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      hintText: 'กรุณากรอกเวลาที่ใช้ในการวิ่ง',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 40.0),
+                  ElevatedButton(
+                    onPressed: () async {
+                      // ตรวจสอบว่ากรอกข้อมูลครบถ้วนหรือไม่
+                      if (runLocationCtrl.text.isEmpty) {
+                        await _showWarningDialog('กรุณากรอกข้อมูลสถานที่วิ่ง');
+                      } else if (runDistanceCtrl.text.isEmpty) {
+                        await _showWarningDialog('กรุณากรอกระยะทางที่วิ่ง');
+                      } else if (runTimeCtrl.text.isEmpty) {
+                        await _showWarningDialog('กรุณากรอกเวลาในการวิ่ง');
+                      } else {
+                        // ถ้ากรอกข้อมูลครบถ้วนแล้ว ทำการบันทึกข้อมูล
+                        // แพ็กข้อมูล
+                        Run run = Run(
+                          runLocation: runLocationCtrl.text,
+                          runDistance: double.parse(runDistanceCtrl.text),
+                          runTime: int.parse(runTimeCtrl.text),
+                        );
+          
+                        // ส่งเป็น JSON
+                        final result = await Dio().post(
+                          'http://172.17.36.43:5090/api/run',
+                          data: run.toJson(),
+                        );
+          
+                        // ตรวจสอบผลลัพธ์
+                        if(result.statusCode == 201) {
+                          await _showResultDialog('บันทึกการวิ่งแล้ว').then((value){
+                            Navigator.pop(context); // กลับไปหน้าจอวิ่ง
+                          });
+                        } else {
+                          await _showWarningDialog('บันทึกการวิ่งไม่สําเร็จ');
+                        }
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple,
+                      fixedSize: Size(MediaQuery.of(context).size.width, 60.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    child: const Text(
+                      'บันทึกการวิ่ง',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
