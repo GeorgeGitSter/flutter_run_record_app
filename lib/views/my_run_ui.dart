@@ -22,7 +22,7 @@ class _MyRunUIState extends State<MyRunUI> {
   Future<List<Run>> fetchMyRuns() async {
     // คำสั่งดึงข้อมูล
     try {
-      final response = await Dio().get('http://172.17.36.43:5090/api/run');
+      final response = await Dio().get('http://192.168.1.42:5090/api/run');
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['result'] as List<dynamic>;
         return data.map((json) => Run.fromJson(json)).toList();
